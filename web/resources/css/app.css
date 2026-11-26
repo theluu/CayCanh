@@ -5,12 +5,16 @@
 @import '@fontsource/lora/vietnamese-700.css';
 @import '@fontsource/lora/latin-500.css';
 @import '@fontsource/lora/latin-700.css';
-@import '@fontsource/be-vietnam-pro/vietnamese-400.css';
-@import '@fontsource/be-vietnam-pro/vietnamese-500.css';
-@import '@fontsource/be-vietnam-pro/vietnamese-600.css';
-@import '@fontsource/be-vietnam-pro/latin-400.css';
-@import '@fontsource/be-vietnam-pro/latin-500.css';
-@import '@fontsource/be-vietnam-pro/latin-600.css';
+@import '@fontsource/lora/vietnamese-400-italic.css';
+@import '@fontsource/lora/latin-400-italic.css';
+@import '@fontsource/roboto/vietnamese-400.css';
+@import '@fontsource/roboto/vietnamese-500.css';
+@import '@fontsource/roboto/vietnamese-700.css';
+@import '@fontsource/roboto/vietnamese-900.css';
+@import '@fontsource/roboto/latin-400.css';
+@import '@fontsource/roboto/latin-500.css';
+@import '@fontsource/roboto/latin-700.css';
+@import '@fontsource/roboto/latin-900.css';
 @import 'swiper/css';
 @import 'swiper/css/pagination';
 @import 'swiper/css/navigation';
@@ -18,7 +22,7 @@
 @source '../js/**/*.vue';
 
 @theme {
-    --font-sans: 'Be Vietnam Pro', ui-sans-serif, system-ui, sans-serif;
+    --font-sans: 'Roboto', ui-sans-serif, system-ui, sans-serif;
     --font-serif: 'Lora', ui-serif, Georgia, serif;
 
     --color-brand-50: #f3f9ea;
@@ -33,13 +37,15 @@
     --color-brand-900: #2f4c0f;
 
     --color-ink: #272727;
-    --color-muted: #6b6b6b;
+    --color-muted: #8f8f8f;
+    --color-ink-2: #1e1e1e;
     --color-paper: #f7f7f7;
 }
 
 @layer base {
-    h1, h2, h3, h4 {
-        @apply font-serif text-ink;
+    h1, h2, h3, h4, h5, h6 {
+        @apply font-serif font-bold text-ink;
+        word-spacing: -1px;
     }
 
     ::selection {
@@ -48,11 +54,11 @@
 }
 
 @utility container-site {
-    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+    @apply mx-auto w-full max-w-[1200px] px-4;
 }
 
 @utility btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-sm px-5 py-2.5 text-sm font-semibold tracking-wide uppercase transition focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 disabled:opacity-60;
+    @apply inline-flex items-center justify-center gap-2 rounded px-6 py-3.5 text-sm font-black uppercase transition focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 disabled:opacity-60;
 }
 
 @utility btn-primary {
@@ -60,7 +66,16 @@
 }
 
 @utility btn-outline {
-    @apply btn border border-white text-white hover:bg-white hover:text-brand-700;
+    @apply btn border-2 border-white text-white hover:bg-white hover:text-brand-600;
+}
+
+@utility btn-white {
+    @apply btn bg-white text-ink hover:bg-brand-500 hover:text-white;
+}
+
+/* "XEM THÊM ▸" links of the template */
+@utility link-more {
+    @apply inline-flex items-center gap-1.5 text-sm font-black text-ink uppercase transition hover:text-brand-500;
 }
 
 @utility btn-ghost {
@@ -86,4 +101,52 @@
 .swiper-button-next,
 .swiper-button-prev {
     color: var(--color-brand-500) !important;
+}
+
+/* Leaf ornament sitting on the top-right of the green word in section titles (template .title_holder) */
+.title-leaf {
+    position: relative;
+    color: var(--color-brand-500);
+}
+
+.title-leaf::before {
+    content: url('/images/theme/title-logo.png');
+    position: absolute;
+    top: -15px;
+    right: -28px;
+    line-height: 0;
+}
+
+.title-leaf-sm::before {
+    content: url('/images/theme/title-logo2.png');
+    top: -8px;
+    right: -19px;
+}
+
+@media (max-width: 767px) {
+    .title-leaf::before {
+        display: none;
+    }
+}
+
+.title-leaf-left::before {
+    right: auto;
+    left: 40%;
+    top: -26px;
+}
+
+.title-leaf-xs::before {
+    content: url('/images/theme/title-logo3.png');
+    top: -8px;
+    right: -16px;
+}
+
+.dashed-ring {
+    box-shadow: inset 0 0 0 4px var(--color-brand-500);
+    outline: 1px dashed rgba(255, 255, 255, 0.7);
+    outline-offset: -5px;
+}
+
+.field-template {
+    @apply block w-full border border-[#efefef] bg-white px-4 py-3 font-serif text-sm text-ink placeholder:text-[#c6c6c6] focus:border-brand-500 focus:outline-none;
 }

@@ -9,6 +9,7 @@ const props = defineProps({
     subjectLabel: { type: String, default: null },
     title: { type: String, default: null },
     submitLabel: { type: String, default: 'Gửi yêu cầu' },
+    variant: { type: String, default: 'default' },
 });
 
 const form = useForm({
@@ -25,6 +26,9 @@ const form = useForm({
 });
 
 const isSurvey = computed(() => props.type === 'survey');
+const fieldClass = computed(() => (props.variant === 'template' ? 'field-template' : 'field'));
+const labelClass = computed(() => (props.variant === 'template' ? 'sr-only' : 'field-label'));
+const ph = (text) => (props.variant === 'template' ? text : undefined);
 
 const submit = () => {
     form.post('/lien-he', {
@@ -47,55 +51,55 @@ const projectKinds = ['Văn phòng', 'Biệt thự / nhà phố', 'Khu đô th�
 
         <div class="grid gap-4 sm:grid-cols-2">
             <div>
-                <label class="field-label" :for="'name-' + type">Họ tên *</label>
-                <input :id="'name-' + type" v-model="form.name" type="text" class="field" autocomplete="name" required />
+                <label :class="labelClass" :for="'name-' + type">Họ tên *</label>
+                <input :id="'name-' + type" v-model="form.name" :placeholder="ph('Họ tên *')" type="text" :class="fieldClass" autocomplete="name" required />
                 <p v-if="form.errors.name" class="mt-1 text-xs text-red-600">{{ form.errors.name }}</p>
             </div>
             <div>
-                <label class="field-label" :for="'phone-' + type">Số điện thoại *</label>
-                <input :id="'phone-' + type" v-model="form.phone" type="tel" class="field" autocomplete="tel" inputmode="tel" required />
+                <label :class="labelClass" :for="'phone-' + type">Số điện thoại *</label>
+                <input :id="'phone-' + type" v-model="form.phone" :placeholder="ph('Số điện thoại *')" type="tel" :class="fieldClass" autocomplete="tel" inputmode="tel" required />
                 <p v-if="form.errors.phone" class="mt-1 text-xs text-red-600">{{ form.errors.phone }}</p>
             </div>
             <div :class="isSurvey ? '' : 'sm:col-span-2'">
-                <label class="field-label" :for="'email-' + type">Email</label>
-                <input :id="'email-' + type" v-model="form.email" type="email" class="field" autocomplete="email" />
+                <label :class="labelClass" :for="'email-' + type">Email</label>
+                <input :id="'email-' + type" v-model="form.email" :placeholder="ph('Email')" type="email" :class="fieldClass" autocomplete="email" />
                 <p v-if="form.errors.email" class="mt-1 text-xs text-red-600">{{ form.errors.email }}</p>
             </div>
             <template v-if="isSurvey">
                 <div>
-                    <label class="field-label" for="project-kind">Loại công trình</label>
-                    <select id="project-kind" v-model="form.meta.project_kind" class="field">
-                        <option value="">-- Chọn --</option>
+                    <label :class="labelClass" for="project-kind">Loại công trình</label>
+                    <select id="project-kind" v-model="form.meta.project_kind" :class="fieldClass">
+                        <option value="">{{ variant === 'template' ? 'Loại công trình' : '-- Chọn --' }}</option>
                         <option v-for="kind in projectKinds" :key="kind">{{ kind }}</option>
                     </select>
                 </div>
                 <div>
-                    <label class="field-label" for="location">Địa điểm công trình</label>
-                    <input id="location" v-model="form.meta.location" type="text" class="field" />
+                    <label :class="labelClass" for="location">Địa điểm công trình</label>
+                    <input id="location" v-model="form.meta.location" :placeholder="ph('Địa điểm công trình')" type="text" :class="fieldClass" />
                 </div>
                 <div>
-                    <label class="field-label" for="area">Diện tích (m²)</label>
-                    <input id="area" v-model="form.meta.area" type="text" class="field" />
+                    <label :class="labelClass" for="area">Diện tích (m²)</label>
+                    <input id="area" v-model="form.meta.area" :placeholder="ph('Diện tích (m²)')" type="text" :class="fieldClass" />
                 </div>
                 <div>
-                    <label class="field-label" for="budget">Ngân sách dự kiến</label>
-                    <input id="budget" v-model="form.meta.budget" type="text" class="field" placeholder="VD: 50 – 100 triệu" />
+                    <label :class="labelClass" for="budget">Ngân sách dự kiến</label>
+                    <input id="budget" v-model="form.meta.budget" type="text" :class="fieldClass" :placeholder="variant === 'template' ? 'Ngân sách dự kiến' : 'VD: 50 – 100 triệu'" />
                 </div>
                 <div>
-                    <label class="field-label" for="timeline">Thời gian mong muốn</label>
-                    <input id="timeline" v-model="form.meta.timeline" type="text" class="field" placeholder="VD: Tháng 1/2027" />
+                    <label :class="labelClass" for="timeline">Thời gian mong muốn</label>
+                    <input id="timeline" v-model="form.meta.timeline" type="text" :class="fieldClass" :placeholder="variant === 'template' ? 'Thời gian mong muốn' : 'VD: Tháng 1/2027'" />
                 </div>
             </template>
         </div>
         <div>
-            <label class="field-label" :for="'message-' + type">{{ isSurvey ? 'Mô tả nhu cầu' : 'Nội dung' }}</label>
-            <textarea :id="'message-' + type" v-model="form.message" rows="4" class="field" />
+            <label :class="labelClass" :for="'message-' + type">{{ isSurvey ? 'Mô tả nhu cầu' : 'Nội dung' }}</label>
+            <textarea :id="'message-' + type" v-model="form.message" :placeholder="ph('Mô tả nhu cầu / nội dung')" rows="4" :class="fieldClass" />
             <p v-if="form.errors.message" class="mt-1 text-xs text-red-600">{{ form.errors.message }}</p>
         </div>
         <p v-if="form.recentlySuccessful" class="rounded-sm bg-brand-50 px-4 py-3 text-sm text-brand-800">
             Cảm ơn bạn! Chúng tôi đã nhận yêu cầu và sẽ liên hệ trong thời gian sớm nhất.
         </p>
         <p v-if="form.errors.throttle" class="text-sm text-red-600">{{ form.errors.throttle }}</p>
-        <button type="submit" class="btn-primary w-full sm:w-auto" :disabled="form.processing">{{ form.processing ? 'Đang gửi…' : submitLabel }}</button>
+        <button type="submit" class="btn-primary w-full sm:w-auto" :class="{ 'sm:float-right sm:w-44': variant === 'template' }" :disabled="form.processing">{{ form.processing ? 'Đang gửi…' : submitLabel }}</button>
     </form>
 </template>

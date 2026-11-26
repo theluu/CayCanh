@@ -5,25 +5,26 @@ import Icon from './Icon.vue';
 defineProps({
     title: { type: String, required: true },
     breadcrumbs: { type: Array, default: () => [] },
-    image: { type: String, default: '/images/banner-inner.jpg' },
+    image: { type: String, default: '/images/theme/inner-banner.jpg' },
+    button: { type: Object, default: () => ({ label: 'Liên hệ ngay', href: '/lien-he' }) },
 });
 </script>
 
 <template>
-    <section class="relative bg-ink bg-cover bg-center" :style="{ backgroundImage: 'url(' + image + ')' }">
-        <div class="absolute inset-0 bg-ink/70" />
-        <div class="container-site relative py-16 md:py-20">
-            <h1 class="text-3xl font-bold text-white md:text-5xl">{{ title }}</h1>
-            <nav class="mt-4" aria-label="Breadcrumb">
-                <ol class="flex flex-wrap items-center gap-1.5 text-sm text-gray-300">
-                    <li><Link href="/" class="hover:text-white">Trang chủ</Link></li>
-                    <li v-for="crumb in breadcrumbs" :key="crumb.label" class="flex items-center gap-1.5">
-                        <Icon name="chevronRight" class="size-3" />
-                        <Link v-if="crumb.href" :href="crumb.href" class="hover:text-white">{{ crumb.label }}</Link>
-                        <span v-else class="text-brand-300">{{ crumb.label }}</span>
-                    </li>
-                </ol>
-            </nav>
+    <section class="bg-brand-500 bg-cover bg-center" :style="{ backgroundImage: 'url(' + image + ')' }">
+        <div class="container-site flex flex-col items-start justify-between gap-6 pt-14 pb-12 md:flex-row md:items-center lg:pt-[110px] lg:pb-[90px]">
+            <h1 class="text-[34px] leading-tight text-white md:text-[42px]">{{ title }}</h1>
+            <Link v-if="button" :href="button.href" class="btn-white w-[180px] shrink-0 !text-brand-500 hover:!text-white">{{ button.label }}</Link>
         </div>
     </section>
+    <nav class="bg-paper" aria-label="Breadcrumb">
+        <ol class="container-site flex flex-wrap items-center justify-center gap-3 py-5 text-sm font-black text-[#9e9e9e]">
+            <li><Link href="/" class="hover:text-brand-500">Trang chủ</Link></li>
+            <li v-for="crumb in breadcrumbs" :key="crumb.label" class="flex items-center gap-3">
+                <Icon name="chevronRight" class="size-3" />
+                <Link v-if="crumb.href" :href="crumb.href" class="hover:text-brand-500">{{ crumb.label }}</Link>
+                <span v-else class="text-brand-500">{{ crumb.label }}</span>
+            </li>
+        </ol>
+    </nav>
 </template>

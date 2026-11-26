@@ -28,6 +28,9 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->brandName('Cây Cảnh – Quản trị')
+            ->brandLogo(asset('images/logo.png'))
+            ->brandLogoHeight('2.75rem')
+            ->favicon(asset('images/favicon-32.png'))
             ->colors([
                 'primary' => Color::Green,
             ])

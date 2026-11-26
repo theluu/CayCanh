@@ -1,6 +1,5 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
-import Icon from './Icon.vue';
 
 defineProps({
     name: { type: String, default: 'Cây Cảnh' },
@@ -9,13 +8,12 @@ defineProps({
 </script>
 
 <template>
-    <Link href="/" class="group inline-flex items-center gap-2.5" aria-label="Trang chủ">
-        <span class="grid size-11 place-items-center rounded-full bg-brand-500 text-white shadow-sm">
-            <Icon name="leaf" class="size-6" />
-        </span>
-        <span class="leading-tight">
-            <span class="block font-serif text-2xl font-bold" :class="light ? 'text-white' : 'text-ink'">{{ name }}</span>
-            <span class="block text-[11px] tracking-[0.2em] uppercase" :class="light ? 'text-gray-400' : 'text-muted'">Cây xanh · Cảnh quan</span>
+    <Link href="/" class="inline-flex items-center gap-3" :aria-label="name + ' – Trang chủ'">
+        <img src="/images/logo.png" srcset="/images/logo.png 1x, /images/logo@2x.png 2x" :alt="name" width="480" height="320"
+            class="h-14 w-auto sm:h-[72px]" fetchpriority="high" />
+        <span class="leading-none">
+            <span class="block font-serif text-[26px] font-bold text-brand-500 sm:text-[32px]">{{ name }}</span>
+            <span class="mt-1.5 hidden font-serif text-sm whitespace-nowrap sm:block" :class="light ? 'text-gray-400' : 'text-muted'">Cây xanh &amp; cây cảnh nghệ thuật</span>
         </span>
     </Link>
 </template>
