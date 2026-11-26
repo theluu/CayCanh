@@ -78,7 +78,12 @@ class EditInquiry extends EditRecord
 
     private function artTree(): ?Product
     {
-        $subject = $this->record->subject()->first();
+        // A morphTo with an empty type builds "where `` is null" on MySQL; only resolve real subjects.
+        if (blank($this->record->subject_type)) {
+            return null;
+        }
+
+        $subject = $this->record->subject;
 
         return $subject instanceof Product && $subject->isArt() ? $subject : null;
     }

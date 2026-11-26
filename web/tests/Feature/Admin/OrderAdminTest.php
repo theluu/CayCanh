@@ -9,6 +9,7 @@ use App\Models\Inquiry;
 use App\Models\Order;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
+use Illuminate\Support\Facades\DB;
 use Livewire\Livewire;
 
 beforeEach(function () {
@@ -31,6 +32,18 @@ it('lets sales and admins manage orders and inquiries', function (Role $role) {
     $this->get('/admin/inquiries')->assertOk();
     $this->get("/admin/inquiries/{$inquiry->id}/edit")->assertOk();
 })->with([Role::Sales, Role::Admin]);
+
+it('opens an inquiry without a subject without querying an empty morph column', function () {
+    $inquiry = Inquiry::factory()->create(['type' => 'survey', 'subject_type' => null, 'subject_id' => null]);
+    $queries = [];
+    DB::listen(function ($query) use (&$queries) {
+        $queries[] = $query->sql;
+    });
+
+    $this->actingAs(adminUser(Role::Sales))->get("/admin/inquiries/{$inquiry->id}/edit")->assertOk();
+
+    expect(collect($queries)->filter(fn (string $sql) => str_contains($sql, 'where "" is null') || str_contains($sql, 'where `` is null')))->toBeEmpty();
+});
 
 it('keeps editors and technicians out of orders and inquiries', function (Role $role) {
     $this->actingAs(adminUser($role));
