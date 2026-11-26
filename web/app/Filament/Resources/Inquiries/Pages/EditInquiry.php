@@ -50,6 +50,11 @@ class EditInquiry extends EditRecord
                     $release->handle($this->artTree());
                     Notification::make()->success()->title('Cây đã trở về trạng thái Còn hàng')->send();
                 }),
+            Action::make('createContract')
+                ->label('Tạo hợp đồng chăm sóc')
+                ->icon('heroicon-o-document-plus')
+                ->visible(fn () => $this->record->status === InquiryStatus::Won)
+                ->url(fn () => '/admin/care-contracts/create?inquiry='.$this->record->id),
             Action::make('viewTree')
                 ->label('Xem cây')
                 ->icon('heroicon-o-eye')
