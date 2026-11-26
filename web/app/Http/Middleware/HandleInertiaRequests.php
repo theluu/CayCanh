@@ -45,10 +45,10 @@ class HandleInertiaRequests extends Middleware
                     ->map(fn (Service $service) => ['name' => $service->name, 'url' => $service->publicPath()])
                     ->all(),
             ],
-            'cart' => fn () => ['count' => (int) array_sum($request->session()->get('cart', []))],
+            'cart' => fn () => ['count' => $request->hasSession() ? (int) array_sum($request->session()->get('cart', [])) : 0],
             'flash' => fn () => [
-                'success' => $request->session()->get('success'),
-                'error' => $request->session()->get('error'),
+                'success' => $request->hasSession() ? $request->session()->get('success') : null,
+                'error' => $request->hasSession() ? $request->session()->get('error') : null,
             ],
         ];
     }
