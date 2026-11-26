@@ -4,11 +4,13 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InquiryController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PriceController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Middleware\Honeypot;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
@@ -44,3 +46,6 @@ Route::delete('/gio-hang/{product}', [CartController::class, 'destroy'])->whereN
 Route::get('/dat-hang', [CheckoutController::class, 'create'])->name('checkout.create');
 Route::post('/dat-hang', [CheckoutController::class, 'store'])->middleware('throttle:10,1')->name('checkout.store');
 Route::get('/dat-hang/thanh-cong/{code}', [CheckoutController::class, 'thanks'])->name('checkout.thanks');
+
+Route::get('/bao-gia', [InquiryController::class, 'create'])->name('quote');
+Route::post('/lien-he', [InquiryController::class, 'store'])->middleware(['throttle:5,1', Honeypot::class])->name('inquiries.store');
