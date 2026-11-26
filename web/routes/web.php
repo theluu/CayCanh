@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
@@ -33,3 +35,12 @@ Route::get('/san-pham/{slug}', [CatalogController::class, 'showProduct'])->name(
 Route::get('/cay-canh-nghe-thuat', [CatalogController::class, 'art'])->name('art.index');
 Route::get('/cay-canh-nghe-thuat/danh-muc/{categorySlug}', [CatalogController::class, 'art'])->name('art.category');
 Route::get('/cay-canh-nghe-thuat/{slug}', [CatalogController::class, 'showArt'])->name('art.show');
+
+Route::get('/gio-hang', [CartController::class, 'index'])->name('cart.index');
+Route::post('/gio-hang', [CartController::class, 'store'])->name('cart.store');
+Route::patch('/gio-hang/{product}', [CartController::class, 'update'])->whereNumber('product')->name('cart.update');
+Route::delete('/gio-hang/{product}', [CartController::class, 'destroy'])->whereNumber('product')->name('cart.destroy');
+
+Route::get('/dat-hang', [CheckoutController::class, 'create'])->name('checkout.create');
+Route::post('/dat-hang', [CheckoutController::class, 'store'])->middleware('throttle:10,1')->name('checkout.store');
+Route::get('/dat-hang/thanh-cong/{code}', [CheckoutController::class, 'thanks'])->name('checkout.thanks');

@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Service;
+use App\Services\Cart;
 use App\Settings\GeneralSettings;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -45,7 +46,7 @@ class HandleInertiaRequests extends Middleware
                     ->map(fn (Service $service) => ['name' => $service->name, 'url' => $service->publicPath()])
                     ->all(),
             ],
-            'cart' => fn () => ['count' => $request->hasSession() ? (int) array_sum($request->session()->get('cart', [])) : 0],
+            'cart' => fn () => ['count' => $request->hasSession() ? app(Cart::class)->count() : 0],
             'flash' => fn () => [
                 'success' => $request->hasSession() ? $request->session()->get('success') : null,
                 'error' => $request->hasSession() ? $request->session()->get('error') : null,
