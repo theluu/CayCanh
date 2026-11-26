@@ -18,8 +18,11 @@ use App\Models\Testimonial;
 use App\Observers\FlushSiteCache;
 use App\Services\Cart;
 use App\Support\SiteCache;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Spatie\LaravelSettings\Events\SettingsSaved;
 use Spatie\MediaLibrary\Conversions\Events\ConversionHasBeenCompletedEvent;
@@ -48,6 +51,9 @@ class AppServiceProvider extends ServiceProvider
         }
 
         Event::listen([SettingsSaved::class, ConversionHasBeenCompletedEvent::class], fn () => SiteCache::flush());
+
+        RateLimiter::for('inquiries', fn (Request $request) => Limit::perMinute(5)->by('inquiries|'.$request->ip()));
+        RateLimiter::for('checkout', fn (Request $request) => Limit::perMinute(10)->by('checkout|'.$request->ip()));
 
         Relation::morphMap([
             'product' => Product::class,

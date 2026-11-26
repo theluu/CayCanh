@@ -9,7 +9,6 @@ use App\Http\Requests\CheckoutRequest;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Services\Cart;
-use App\Services\CartLine;
 use App\Support\Money;
 use App\Support\Seo;
 use Illuminate\Http\RedirectResponse;
@@ -30,13 +29,27 @@ class CheckoutController extends Controller
         return Inertia::render('Checkout', [
             'seo' => Seo::make('Đặt hàng'),
             'lines' => CartController::presentLines($lines),
-            'total' => Money::vnd($lines->sum(fn (CartLine $line) => $line->lineTotal())),
+            'total' => Money::vnd(Cart::totalOf($lines)),
+            'totalRaw' => Cart::totalOf($lines),
+            'pruned' => $cart->pullPruned(),
             'paymentMethods' => collect(PaymentMethod::cases())->map(fn (PaymentMethod $method) => ['value' => $method->value, 'label' => $method->label()])->all(),
         ]);
     }
 
     public function store(CheckoutRequest $request, Cart $cart, PlaceOrder $placeOrder): RedirectResponse
     {
+        $lines = $cart->lines();
+
+        // Never place a different order than the one the customer reviewed.
+        if ($lines->isNotEmpty() && $cart->hasPruned()) {
+            return to_route('checkout.create')->with('error', 'Một số sản phẩm không còn bán và đã được bỏ khỏi giỏ: '
+                .implode(', ', $cart->pullPruned()).'. Vui lòng kiểm tra lại đơn hàng.');
+        }
+
+        if ($request->filled('expected_total') && (int) $request->input('expected_total') !== Cart::totalOf($lines)) {
+            return to_route('checkout.create')->with('error', 'Giá sản phẩm vừa được cập nhật. Vui lòng kiểm tra lại tổng tiền trước khi đặt hàng.');
+        }
+
         try {
             $order = $placeOrder->handle($request->validated(), $cart);
         } catch (EmptyCart $exception) {

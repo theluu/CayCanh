@@ -29,6 +29,10 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $exceptions->respond(function (Response $response, Throwable $exception, Request $request) {
             $status = $response->getStatusCode();
+
+            if ($status === 429 && $request->header('X-Inertia') && ! $request->isMethod('GET')) {
+                return back()->withInput()->withErrors(['throttle' => 'Bạn gửi quá nhiều lần. Vui lòng thử lại sau ít phút hoặc gọi hotline.']);
+            }
             $isPublicPage = ! $request->is('admin', 'admin/*', 'livewire*', 'filament*');
             $renderable = in_array($status, [403, 404, 419, 429, 503], true) || ($status === 500 && ! app()->hasDebugModeEnabled());
 

@@ -6,7 +6,7 @@ import SiteLayout from '@/Layouts/SiteLayout.vue';
 
 defineOptions({ layout: SiteLayout });
 
-const props = defineProps({ seo: Object, lines: Array, total: String, paymentMethods: Array });
+const props = defineProps({ seo: Object, lines: Array, total: String, totalRaw: Number, pruned: Array, paymentMethods: Array });
 
 const form = useForm({
     customer_name: '',
@@ -16,9 +16,10 @@ const form = useForm({
     address: '',
     note: '',
     payment_method: props.paymentMethods[0]?.value ?? 'cod',
+    expected_total: props.totalRaw,
 });
 
-const submit = () => form.post('/dat-hang');
+const submit = () => form.transform((data) => ({ ...data, expected_total: props.totalRaw })).post('/dat-hang');
 </script>
 
 <template>
@@ -26,6 +27,10 @@ const submit = () => form.post('/dat-hang');
     <PageBanner title="Đặt hàng" :breadcrumbs="[{ label: 'Giỏ hàng', href: '/gio-hang' }, { label: 'Đặt hàng' }]" />
     <form class="container-site grid gap-10 py-16 lg:grid-cols-3" novalidate @submit.prevent="submit">
         <div class="space-y-5 lg:col-span-2">
+            <div v-if="pruned?.length" class="border-l-4 border-amber-500 bg-amber-50 px-4 py-3 text-sm">
+                Một số sản phẩm không còn bán đã được bỏ khỏi giỏ: <strong>{{ pruned.join(', ') }}</strong>. Vui lòng kiểm tra lại đơn hàng.
+            </div>
+            <div v-if="$page.props.flash?.error" class="border-l-4 border-red-500 bg-red-50 px-4 py-3 text-sm text-red-800">{{ $page.props.flash.error }}</div>
             <h2 class="text-2xl font-bold">Thông tin nhận hàng</h2>
             <div class="grid gap-4 sm:grid-cols-2">
                 <div>

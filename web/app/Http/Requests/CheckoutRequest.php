@@ -25,6 +25,7 @@ class CheckoutRequest extends FormRequest
             'address' => ['required', 'string', 'max:255'],
             'note' => ['nullable', 'string', 'max:1000'],
             'payment_method' => ['required', Rule::enum(PaymentMethod::class)],
+            'expected_total' => ['nullable', 'integer', 'min:0'],
         ];
     }
 

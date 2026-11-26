@@ -24,8 +24,8 @@ class CartController extends Controller
         return Inertia::render('Cart', [
             'seo' => Seo::make('Giỏ hàng'),
             'lines' => self::presentLines($lines),
-            'total' => Money::vnd($lines->sum(fn (CartLine $line) => $line->lineTotal())),
-            'pruned' => $cart->pruned(),
+            'total' => Money::vnd(Cart::totalOf($lines)),
+            'pruned' => $cart->pullPruned(),
         ]);
     }
 

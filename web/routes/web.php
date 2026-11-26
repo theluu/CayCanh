@@ -44,8 +44,8 @@ Route::patch('/gio-hang/{product}', [CartController::class, 'update'])->whereNum
 Route::delete('/gio-hang/{product}', [CartController::class, 'destroy'])->whereNumber('product')->name('cart.destroy');
 
 Route::get('/dat-hang', [CheckoutController::class, 'create'])->name('checkout.create');
-Route::post('/dat-hang', [CheckoutController::class, 'store'])->middleware('throttle:10,1')->name('checkout.store');
+Route::post('/dat-hang', [CheckoutController::class, 'store'])->middleware('throttle:checkout')->name('checkout.store');
 Route::get('/dat-hang/thanh-cong/{code}', [CheckoutController::class, 'thanks'])->name('checkout.thanks');
 
 Route::get('/bao-gia', [InquiryController::class, 'create'])->name('quote');
-Route::post('/lien-he', [InquiryController::class, 'store'])->middleware(['throttle:5,1', Honeypot::class])->name('inquiries.store');
+Route::post('/lien-he', [InquiryController::class, 'store'])->middleware(['throttle:inquiries', Honeypot::class])->name('inquiries.store');

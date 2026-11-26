@@ -16,8 +16,7 @@ class Cart
 
     private const KEY = 'cart';
 
-    /** @var array<int, string> */
-    private array $pruned = [];
+    private const PRUNED_KEY = 'cart_pruned';
 
     public function __construct(private Session $session) {}
 
@@ -56,7 +55,7 @@ class Cart
 
     public function clear(): void
     {
-        $this->session->forget(self::KEY);
+        $this->session->forget([self::KEY, self::PRUNED_KEY]);
     }
 
     public function count(): int
@@ -86,7 +85,7 @@ class Cart
 
             if (! $product || ! $product->isPurchasable()) {
                 if ($product) {
-                    $this->pruned[] = $product->name;
+                    $this->session->push(self::PRUNED_KEY, $product->name);
                 }
 
                 continue;
@@ -103,15 +102,27 @@ class Cart
         return $lines;
     }
 
-    public function total(): int
+    /**
+     * @param  Collection<int, CartLine>  $lines
+     */
+    public static function totalOf(Collection $lines): int
     {
-        return $this->lines()->sum(fn (CartLine $line) => $line->lineTotal());
+        return $lines->sum(fn (CartLine $line) => $line->lineTotal());
     }
 
-    /** @return array<int, string> names of products removed by the last lines() call */
-    public function pruned(): array
+    public function hasPruned(): bool
     {
-        return array_values(array_unique($this->pruned));
+        return $this->session->has(self::PRUNED_KEY);
+    }
+
+    /**
+     * Names of products removed from the cart since a page last showed them; reading clears them.
+     *
+     * @return array<int, string>
+     */
+    public function pullPruned(): array
+    {
+        return array_values(array_unique((array) $this->session->pull(self::PRUNED_KEY, [])));
     }
 
     /** @return array<int, int> */
