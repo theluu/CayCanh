@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
@@ -24,3 +25,11 @@ Route::get('/du-an/{slug}', [ProjectController::class, 'show'])->name('projects.
 Route::get('/tin-tuc', [PostController::class, 'index'])->name('posts.index');
 Route::get('/tin-tuc/danh-muc/{slug}', [PostController::class, 'category'])->name('posts.category');
 Route::get('/tin-tuc/{slug}', [PostController::class, 'show'])->name('posts.show');
+
+Route::get('/san-pham', [CatalogController::class, 'products'])->name('products.index');
+Route::get('/san-pham/danh-muc/{categorySlug}', [CatalogController::class, 'products'])->name('products.category');
+Route::get('/san-pham/{slug}', [CatalogController::class, 'showProduct'])->name('products.show');
+
+Route::get('/cay-canh-nghe-thuat', [CatalogController::class, 'art'])->name('art.index');
+Route::get('/cay-canh-nghe-thuat/danh-muc/{categorySlug}', [CatalogController::class, 'art'])->name('art.category');
+Route::get('/cay-canh-nghe-thuat/{slug}', [CatalogController::class, 'showArt'])->name('art.show');
