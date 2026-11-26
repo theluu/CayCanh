@@ -1,2 +1,7 @@
 User-agent: *
-Disallow:
+Disallow: /admin
+Disallow: /livewire
+Disallow: /gio-hang
+Disallow: /dat-hang
+
+Sitemap: http://localhost:8000/sitemap.xml

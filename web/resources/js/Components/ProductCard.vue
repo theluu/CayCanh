@@ -29,19 +29,19 @@ const addToCart = () => {
                 {{ product.availability.label }}
             </span>
         </Link>
-        <div class="flex flex-1 flex-col p-4">
-            <h3 class="font-serif text-lg leading-snug font-bold">
+        <div class="flex flex-1 flex-col p-3 sm:p-4">
+            <h3 class="font-serif text-base leading-snug font-bold sm:text-lg">
                 <Link :href="product.url" class="hover:text-brand-600">{{ product.name }}</Link>
             </h3>
-            <div class="mt-2 flex items-baseline gap-2">
-                <span class="font-semibold text-brand-600">{{ product.price }}</span>
-                <span v-if="product.originalPrice" class="text-sm text-gray-400 line-through">{{ product.originalPrice }}</span>
+            <div class="mt-2 flex flex-wrap items-baseline gap-x-2">
+                <span class="text-sm font-semibold whitespace-nowrap text-brand-600 sm:text-base">{{ product.price }}</span>
+                <span v-if="product.originalPrice" class="text-xs whitespace-nowrap text-gray-400 line-through sm:text-sm">{{ product.originalPrice }}</span>
             </div>
             <div class="mt-auto pt-4">
-                <button v-if="product.canAddToCart" type="button" class="btn-ghost w-full" :disabled="adding" @click="addToCart">
-                    <Icon name="cart" class="size-4" /> Thêm vào giỏ
+                <button v-if="product.canAddToCart" type="button" class="btn-ghost w-full px-2 text-xs sm:px-5 sm:text-sm" :disabled="adding" @click="addToCart">
+                    <Icon name="cart" class="hidden size-4 sm:block" /> Thêm vào giỏ
                 </button>
-                <Link v-else :href="product.url" class="btn-ghost w-full">Xem & nhận báo giá</Link>
+                <Link v-else :href="product.url" class="btn-ghost w-full px-2 text-xs sm:px-5 sm:text-sm">Xem & báo giá</Link>
             </div>
         </div>
     </article>

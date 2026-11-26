@@ -20,7 +20,6 @@ trait HasImageConversions
                 ->fit(Fit::Max, $width, $width)
                 ->format('webp')
                 ->quality(80)
-                ->withResponsiveImages()
                 ->queued();
         }
     }
