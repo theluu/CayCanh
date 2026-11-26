@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Models\Service;
 use App\Services\Cart;
 use App\Settings\GeneralSettings;
+use App\Support\SiteCache;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -40,12 +41,12 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
-            'site' => fn () => app(GeneralSettings::class)->publicData(),
-            'menu' => fn () => [
+            'site' => fn () => SiteCache::remember('settings.public', fn () => app(GeneralSettings::class)->publicData()),
+            'menu' => fn () => SiteCache::remember('menu', fn () => [
                 'services' => Service::published()->ordered()->get(['name', 'slug'])
                     ->map(fn (Service $service) => ['name' => $service->name, 'url' => $service->publicPath()])
                     ->all(),
-            ],
+            ]),
             'cart' => fn () => ['count' => $request->hasSession() ? app(Cart::class)->count() : 0],
             'flash' => fn () => [
                 'success' => $request->hasSession() ? $request->session()->get('success') : null,
