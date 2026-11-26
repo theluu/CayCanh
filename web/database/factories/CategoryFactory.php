@@ -15,7 +15,7 @@ class CategoryFactory extends Factory
     {
         return [
             'scope' => ProductKind::Standard,
-            'name' => fake()->unique()->randomElement(['Cây nội thất', 'Cây văn phòng', 'Cây công trình', 'Chậu cảnh', 'Vật tư', 'Cây phong thủy', 'Cây để bàn', 'Cây ngoại thất']).' '.fake()->numberBetween(1, 999),
+            'name' => fake()->randomElement(['Cây nội thất', 'Cây văn phòng', 'Cây công trình', 'Chậu cảnh', 'Vật tư', 'Cây phong thủy', 'Cây để bàn', 'Cây ngoại thất']).' '.fake()->numberBetween(1, 999),
             'sort' => 0,
             'is_visible' => true,
         ];

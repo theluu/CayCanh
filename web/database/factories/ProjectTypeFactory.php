@@ -13,7 +13,7 @@ class ProjectTypeFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->unique()->randomElement(['Biệt thự', 'Văn phòng', 'Khu đô thị', 'Resort', 'Trường học', 'Nhà xưởng']).' '.fake()->numberBetween(1, 999),
+            'name' => fake()->randomElement(['Biệt thự', 'Văn phòng', 'Khu đô thị', 'Resort', 'Trường học', 'Nhà xưởng']).' '.fake()->numberBetween(1, 999),
             'sort' => 0,
         ];
     }

@@ -1,9 +1,89 @@
 @import 'tailwindcss';
+@plugin '@tailwindcss/typography';
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
+@import '@fontsource/lora/vietnamese-500.css';
+@import '@fontsource/lora/vietnamese-700.css';
+@import '@fontsource/lora/latin-500.css';
+@import '@fontsource/lora/latin-700.css';
+@import '@fontsource/be-vietnam-pro/vietnamese-400.css';
+@import '@fontsource/be-vietnam-pro/vietnamese-500.css';
+@import '@fontsource/be-vietnam-pro/vietnamese-600.css';
+@import '@fontsource/be-vietnam-pro/latin-400.css';
+@import '@fontsource/be-vietnam-pro/latin-500.css';
+@import '@fontsource/be-vietnam-pro/latin-600.css';
+@import 'swiper/css';
+@import 'swiper/css/pagination';
+@import 'swiper/css/navigation';
+
+@source '../js/**/*.vue';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Be Vietnam Pro', ui-sans-serif, system-ui, sans-serif;
+    --font-serif: 'Lora', ui-serif, Georgia, serif;
+
+    --color-brand-50: #f3f9ea;
+    --color-brand-100: #e3f1cc;
+    --color-brand-200: #c8e39b;
+    --color-brand-300: #a6d163;
+    --color-brand-400: #87bf33;
+    --color-brand-500: #6aaf08;
+    --color-brand-600: #5a9606;
+    --color-brand-700: #457407;
+    --color-brand-800: #385b0c;
+    --color-brand-900: #2f4c0f;
+
+    --color-ink: #272727;
+    --color-muted: #6b6b6b;
+    --color-paper: #f7f7f7;
+}
+
+@layer base {
+    h1, h2, h3, h4 {
+        @apply font-serif text-ink;
+    }
+
+    ::selection {
+        @apply bg-brand-500 text-white;
+    }
+}
+
+@utility container-site {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+}
+
+@utility btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-sm px-5 py-2.5 text-sm font-semibold tracking-wide uppercase transition focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 disabled:opacity-60;
+}
+
+@utility btn-primary {
+    @apply btn bg-brand-500 text-white hover:bg-brand-600;
+}
+
+@utility btn-outline {
+    @apply btn border border-white text-white hover:bg-white hover:text-brand-700;
+}
+
+@utility btn-ghost {
+    @apply btn border border-brand-500 text-brand-600 hover:bg-brand-500 hover:text-white;
+}
+
+@utility field {
+    @apply block w-full rounded-sm border border-gray-200 bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-gray-400 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 focus:outline-none;
+}
+
+@utility field-label {
+    @apply mb-1.5 block text-sm font-medium text-ink;
+}
+
+@utility rich {
+    @apply prose prose-neutral max-w-none prose-headings:font-serif prose-a:text-brand-600 prose-img:rounded-sm;
+}
+
+.swiper-pagination-bullet-active {
+    background: var(--color-brand-500) !important;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    color: var(--color-brand-500) !important;
 }

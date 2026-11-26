@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Service;
 use App\Settings\GeneralSettings;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -39,6 +40,16 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'site' => fn () => app(GeneralSettings::class)->publicData(),
+            'menu' => fn () => [
+                'services' => Service::published()->ordered()->get(['name', 'slug'])
+                    ->map(fn (Service $service) => ['name' => $service->name, 'url' => $service->publicPath()])
+                    ->all(),
+            ],
+            'cart' => fn () => ['count' => (int) array_sum($request->session()->get('cart', []))],
+            'flash' => fn () => [
+                'success' => $request->session()->get('success'),
+                'error' => $request->session()->get('error'),
+            ],
         ];
     }
 }

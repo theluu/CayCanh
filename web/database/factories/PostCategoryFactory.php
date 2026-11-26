@@ -13,7 +13,7 @@ class PostCategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->unique()->randomElement(['Kiến thức chăm cây', 'Tin tức', 'Phong thủy', 'Cảnh quan']).' '.fake()->numberBetween(1, 999),
+            'name' => fake()->randomElement(['Kiến thức chăm cây', 'Tin tức', 'Phong thủy', 'Cảnh quan']).' '.fake()->numberBetween(1, 999),
             'sort' => 0,
         ];
     }
