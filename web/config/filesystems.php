@@ -30,6 +30,18 @@ return [
 
     'disks' => [
 
+        // Off-site backup target (S3-compatible: AWS S3, Cloudflare R2, Backblaze B2, Wasabi…). Enable with BACKUP_DISKS=local,backup_remote
+        'backup_remote' => [
+            'driver' => 's3',
+            'key' => env('BACKUP_S3_KEY'),
+            'secret' => env('BACKUP_S3_SECRET'),
+            'region' => env('BACKUP_S3_REGION', 'auto'),
+            'bucket' => env('BACKUP_S3_BUCKET'),
+            'endpoint' => env('BACKUP_S3_ENDPOINT'),
+            'use_path_style_endpoint' => (bool) env('BACKUP_S3_PATH_STYLE', true),
+            'throw' => false,
+        ],
+
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app/private'),
