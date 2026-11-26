@@ -35,4 +35,14 @@ return [
         ],
     ],
 
+    'telegram-bot-api' => [
+        'token' => env('TELEGRAM_BOT_TOKEN'),
+        'base_uri' => env('TELEGRAM_API_BASE_URI'),
+    ],
+
+    'zalo_oa' => [
+        'access_token' => env('ZALO_OA_ACCESS_TOKEN'),
+        'recipients' => array_filter(explode(',', (string) env('ZALO_OA_RECIPIENTS', ''))),
+    ],
+
 ];
