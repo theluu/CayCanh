@@ -6,6 +6,7 @@ use App\Models\Concerns\HasImageConversions;
 use App\Models\Concerns\HasSeo;
 use App\Models\Concerns\HasSlug;
 use App\Models\Concerns\Publishable;
+use App\Models\Concerns\TriggersSitemap;
 use Database\Factories\ProjectFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,7 +19,7 @@ use Spatie\MediaLibrary\HasMedia;
 class Project extends Model implements HasMedia
 {
     /** @use HasFactory<ProjectFactory> */
-    use HasFactory, HasImageConversions, HasSeo, HasSlug, Publishable;
+    use HasFactory, HasImageConversions, HasSeo, HasSlug, Publishable, TriggersSitemap;
 
     protected function casts(): array
     {

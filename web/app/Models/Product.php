@@ -7,6 +7,7 @@ use App\Enums\ProductKind;
 use App\Models\Concerns\HasImageConversions;
 use App\Models\Concerns\HasSeo;
 use App\Models\Concerns\HasSlug;
+use App\Models\Concerns\TriggersSitemap;
 use App\Support\Money;
 use Database\Factories\ProductFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -24,7 +25,7 @@ use Spatie\MediaLibrary\HasMedia;
 class Product extends Model implements HasMedia
 {
     /** @use HasFactory<ProductFactory> */
-    use HasFactory, HasImageConversions, HasSeo, HasSlug;
+    use HasFactory, HasImageConversions, HasSeo, HasSlug, TriggersSitemap;
 
     protected $attributes = [
         'kind' => 'standard',

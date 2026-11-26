@@ -10,3 +10,4 @@ Artisan::command('inspire', function () {
 
 Schedule::command('care:generate')->dailyAt('01:00');
 Schedule::command('care:remind')->dailyAt('06:30');
+Schedule::command('sitemap:generate')->dailyAt('02:30');
