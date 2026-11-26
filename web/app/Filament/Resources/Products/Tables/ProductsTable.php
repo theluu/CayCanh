@@ -2,9 +2,12 @@
 
 namespace App\Filament\Resources\Products\Tables;
 
+use App\Actions\MarkArtSold;
+use App\Actions\ReleaseArtTree;
 use App\Enums\ArtAvailability;
 use App\Enums\ProductKind;
 use App\Models\Product;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -46,6 +49,14 @@ class ProductsTable
             ])
             ->recordActions([
                 EditAction::make(),
+                Action::make('markSold')->label('Đã bán')->icon('heroicon-o-check-badge')->color('gray')
+                    ->requiresConfirmation()
+                    ->visible(fn (Product $record) => $isArt && $record->availability !== ArtAvailability::Sold)
+                    ->action(fn (Product $record) => app(MarkArtSold::class)->handle($record)),
+                Action::make('release')->label('Trả về còn hàng')->icon('heroicon-o-lock-open')->color('warning')
+                    ->requiresConfirmation()
+                    ->visible(fn (Product $record) => $isArt && $record->availability !== ArtAvailability::Available)
+                    ->action(fn (Product $record) => app(ReleaseArtTree::class)->handle($record)),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
