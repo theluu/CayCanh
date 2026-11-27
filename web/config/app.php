@@ -67,6 +67,11 @@ return [
 
     'timezone' => env('APP_TIMEZONE', 'Asia/Ho_Chi_Minh'),
 
+    /*
+     * Keep non-production copies (e.g. the dev domain) out of search engines.
+     */
+    'noindex' => (bool) env('SEO_NOINDEX', false),
+
     'admin_email' => env('ADMIN_EMAIL'),
 
     'admin_password' => env('ADMIN_PASSWORD'),

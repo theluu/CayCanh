@@ -33,7 +33,7 @@ const crumbs = [{ label: rootLabel, href: root }, ...(props.product.category ? [
 
 <template>
     <SeoHead :seo="seo" />
-    <PageBanner :title="product.name" :breadcrumbs="crumbs" />
+    <PageBanner :title="product.name" :breadcrumbs="crumbs" heading-tag="p" />
     <section class="container-site grid gap-12 py-16 lg:grid-cols-2">
         <Gallery :images="product.gallery" :video-url="product.videoUrl" :alt="product.name" />
         <div>

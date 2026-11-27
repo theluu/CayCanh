@@ -7,6 +7,9 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/images/icon-512.png">
     <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
     <meta name="theme-color" content="#6aaf08">
+    @if (config('app.noindex'))
+    <meta name="robots" content="noindex, nofollow">
+    @endif
     @vite(['resources/js/app.js'])
     @inertiaHead
     @foreach (data_get($page, 'props.seo.jsonLd', []) as $schema)

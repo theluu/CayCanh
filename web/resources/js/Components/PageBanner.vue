@@ -4,6 +4,8 @@ import Icon from './Icon.vue';
 
 defineProps({
     title: { type: String, required: true },
+    // Pages that render their own <h1> (product detail) pass "p" so each page keeps a single h1.
+    headingTag: { type: String, default: 'h1' },
     breadcrumbs: { type: Array, default: () => [] },
     image: { type: String, default: '/images/theme/inner-banner.jpg' },
     button: { type: Object, default: () => ({ label: 'Liên hệ ngay', href: '/lien-he' }) },
@@ -13,7 +15,7 @@ defineProps({
 <template>
     <section class="bg-brand-500 bg-cover bg-center" :style="{ backgroundImage: 'url(' + image + ')' }">
         <div class="container-site flex flex-col items-start justify-between gap-6 pt-14 pb-12 md:flex-row md:items-center lg:pt-[110px] lg:pb-[90px]">
-            <h1 class="text-[34px] leading-tight text-white md:text-[42px]">{{ title }}</h1>
+            <component :is="headingTag" class="text-[34px] leading-tight text-white md:text-[42px]">{{ title }}</component>
             <Link v-if="button" :href="button.href" class="btn-white w-[180px] shrink-0 !text-brand-500 hover:!text-white">{{ button.label }}</Link>
         </div>
     </section>
