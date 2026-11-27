@@ -10,7 +10,8 @@ export default defineConfig({
             input: ['resources/js/app.js'],
             refresh: true,
         }),
-        inertia(),
+        // Bind the production SSR server to localhost only; nginx/PHP reach it internally.
+        inertia({ ssr: { host: '127.0.0.1', port: 13714 } }),
         vue({
             template: {
                 transformAssetUrls: { base: null, includeAbsolute: false },
